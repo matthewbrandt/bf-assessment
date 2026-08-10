@@ -45,11 +45,8 @@ Additionally, duplicate order ids were removed to avoid double-counting. Since a
 Customer ID is unique and non-null, so no additional cleaning was required. However, email is not unique across customers so in order to avoid possible later-stage quality issues, records with duplicate emails were flagged in the table (on all affected rows) to allow for later usage.
 
 ### 🛍️ products
-#### Decision & Rationale
-tbd
-
-#### Decision & Rationale
-tbd
+#### Validation & Type Conversion
+The unit_price field was converted to a decimal type to ensure that it is treated as a numeric.
 
 ---
 
@@ -100,13 +97,12 @@ tbd
 
 ## 5. Testing Approach
 
-- Mention the key tests included in the project:
-  - uniqueness and not-null tests on the mart key,
-  - relationship tests for customer references,
-  - data quality tests for completed orders,
-  - at least one singular business-rule test.
+### Key Tests
+  - relationship test for `orders.customer_id` to `customers.id`
+  - data quality tests for completed orders and valid revenue values
+  - a business rule test to ensure that no products have a zero or null unit_price
 
-- Briefly explain why these tests matter:
-  - they protect the integrity of the mart,
-  - they catch regressions in data quality assumptions,
-  - they make the model more trustworthy for downstream analysis.
+### Why These Tests
+  - they validate referential integrity so every orders.customer_id exists in customers and alert when orphaned orders appear
+  - they enforce business rules such as only counting orders that are fulfilled and within the reporting period, and that revenue is > 0
+  - they catch data-entry or ETL regressions like duplicate order_id insertion, unit_price <= 0 on products, or order_date values in the future so analysts aren't misled by bad source data.
