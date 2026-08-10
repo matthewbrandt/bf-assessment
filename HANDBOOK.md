@@ -10,8 +10,6 @@ This page describes the submitted work for the assessment. It is worded concisel
   - the extra metric adds analytical depth,
   - the solution is documented and tested end to end.
 
----
-
 ## 1. How to Run the Project
 
 From the project root, run:
@@ -26,8 +24,6 @@ Notes:
 ```bash
 python scripts/generate_seed_data.py
 ```
-
----
 
 ## 2. Data Processing Decisions
 
@@ -48,9 +44,11 @@ Customer ID is unique and non-null, so no additional cleaning was required. Howe
 #### Validation & Type Conversion
 The unit_price field was converted to a decimal type to ensure that it is treated as a numeric.
 
----
+## 3. Intermediate Model Design
 
-## 3. Incremental Strategy
+`int_orders_enriched` was implemented as an intermediate model to join the cleaned orders and customer data together, as well as add a few additional fields to support downstream analysis. The model is designed to be a stable, reusable foundation for the revenue mart and other potential downstream models.
+
+## 4. Incremental Strategy
 
 ### What was implemented
 - Describe the incremental logic used in the mart.
@@ -105,4 +103,6 @@ The unit_price field was converted to a decimal type to ensure that it is treate
 ### Why These Tests
   - they validate referential integrity so every orders.customer_id exists in customers and alert when orphaned orders appear
   - they enforce business rules such as only counting orders that are fulfilled and within the reporting period, and that revenue is > 0
-  - they catch data-entry or ETL regressions like duplicate order_id insertion, unit_price <= 0 on products, or order_date values in the future so analysts aren't misled by bad source data.
+  - they catch data-entry or ETL regressions like duplicate order_id insertion, unit_price <= 0 on products, or order_date values in the future so analysts aren't misled by bad source data
+
+N.B. Some of these tests are implemented as dbt built-in tests, while others are implemented as custom SQL tests. The custom tests are located in the `tests` directory and are run automatically with `dbt test`. This is to ensure that the project is fully tested end-to-end and that any data quality issues are surfaced immediately, with the native model tests providing a first line of defense and the custom tests providing additional business rule coverage, with some overlap.

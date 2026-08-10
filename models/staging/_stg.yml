@@ -48,3 +48,24 @@ models:
         description: Product category.
       - name: unit_price
         description: Numeric unit price.
+
+tests:
+  - name: stg_orders
+    columns:
+      - name: id
+        tests:
+          - unique
+          - not_null
+  - name: stg_customers
+    columns:
+      - name: id
+        tests:
+          - unique
+          - not_null
+  - name: stg_orders
+    columns:
+      - name: customer_id
+        tests:
+          - relationships:
+              to: ref('stg_customers')
+              field: id

@@ -3,22 +3,22 @@ raw AS (
     SELECT
         order_id AS id,
         customer_id,
-        order_date AS created_at,
-        status,
+        TRY_CAST(order_date AS DATE) AS created_at,
+        LOWER(status) AS status,
         total_amount AS amount,
         currency,
-        updated_at
+        TRY_CAST(updated_at AS DATE) AS updated_at
     FROM
         {{ ref('orders') }}
     WHERE
         --dates
         (
             --invalid dates impermissible
-            try_cast(order_date AS date) IS null
+            TRY_CAST(order_date AS date) IS null
             --dates prior to Jan 2024 impermissible
-            OR try_cast(order_date AS date) < '2024-01-01'
+            OR TRY_CAST(order_date AS date) < '2024-01-01'
             --future dates beyond March 2024 impermissible
-            OR try_cast(order_date AS date) >= '2024-04-01'
+            OR TRY_CAST(order_date AS date) >= '2024-04-01'
             --future orders impermissible)
         )
         OR
