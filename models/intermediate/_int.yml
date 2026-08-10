@@ -1,0 +1,33 @@
+version: 2
+
+models:
+  - name: int_orders_enriched
+    description: |
+      Enriched orders model that joins order records to customer attributes and adds revenue recognition logic.
+    columns:
+      - name: id
+        description: Unique order identifier.
+      - name: customer_id
+        description: Customer identifier used to join to customer data.
+      - name: created_at
+        description: Order creation timestamp.
+      - name: created_year_month
+        description: Month bucket derived from the order creation date.
+      - name: has_post_creation_update
+        description: Indicates whether the order was updated after creation.
+      - name: status
+        description: Order lifecycle state.
+      - name: amount
+        description: Order amount.
+      - name: currency
+        description: Order currency.
+      - name: updated_at
+        description: Order last updated timestamp.
+      - name: country_code
+        description: Customer country code from the joined customer record.
+      - name: email
+        description: Customer email from the joined customer record.
+      - name: has_duplicate_email
+        description: Flag indicating whether the customer email is duplicated.
+      - name: is_revenue_recognisable
+        description: Whether the order status qualifies for revenue recognition.

@@ -1,0 +1,71 @@
+version: 2
+
+models:
+  - name: stg_orders
+    description: |
+      Staging model for orders that removes bad dates, filters orders outside the Jan-Mar 2024 reporting window,
+      deduplicates by id using the newest updated_at.
+    columns:
+      - name: id
+        description: Unique order identifier.
+      - name: customer_id
+        description: Customer identifier for relationship tests.
+      - name: created_at
+        description: Parsed order date within the valid reporting range.
+      - name: status
+        description: Order lifecycle state.
+      - name: amount
+        description: Cleaned numeric amount; null or invalid amounts are excluded.
+      - name: currency
+        description: Order currency.
+      - name: updated_at
+        description: Parsed updated timestamp used for incremental deduplication.
+
+  - name: stg_customers
+    description: |
+      Staging model for customers that normalises emails and flags duplicate email addresses. When an email appears more than once, all matching rows are retained but marked as duplicates.
+    columns:
+      - name: id
+        description: Unique customer identifier.
+      - name: email
+        description: Normalised lowercase email.
+      - name: country_code
+        description: Customer country used for revenue aggregation.
+      - name: created_at
+        description: Customer creation date.
+      - name: has_duplicate_email
+        description: True when the email appears in more than one customer row.
+
+  - name: stg_products
+    description: |
+      Minimal product staging with numeric price conversion.
+    columns:
+      - name: id
+        description: Unique product identifier.
+      - name: name
+        description: Product name.
+      - name: category
+        description: Product category.
+      - name: unit_price
+        description: Numeric unit price.
+
+tests:
+  - name: stg_orders
+    columns:
+      - name: id
+        tests:
+          - unique
+          - not_null
+  - name: stg_customers
+    columns:
+      - name: id
+        tests:
+          - unique
+          - not_null
+  - name: stg_orders
+    columns:
+      - name: customer_id
+        tests:
+          - relationships:
+              to: ref('stg_customers')
+              field: id
