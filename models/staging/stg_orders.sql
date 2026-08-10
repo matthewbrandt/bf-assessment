@@ -50,6 +50,5 @@ FROM
 WHERE
     --remove duplicates by id
     rw.id NOT IN (
-        SELECT id FROM remove_dupes
-        WHERE row_num > 1
+        SELECT id FROM remove_dupes WHERE row_num > 1
     )
