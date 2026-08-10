@@ -31,16 +31,27 @@ python scripts/generate_seed_data.py
 
 ## 2. Data Processing Decisions
 
-### Dates & Times
+### 📦 orders
+#### Dates & Times
 Invalid (non-date formatted) and future dates were treated as unusable for the business because they would distort period-based reporting. Dates cannot be "assumed" and thus those rows were discarded entirely.
 
-### Order Consistency
-Orders with missing or zero-like amounts are exempt from revenue aggregation so the mart reflects only economically meaningful transactions.
+#### Quality & Consistency
+Orders with missing, zero or zero-like amounts are exempt from revenue aggregation so the mart reflects only economically meaningful transactions. Duplicate order ids were also removed to avoid double-counting. Orders that have not been completed or have been erroneous are also excluded due to their lack of economic significance.
 
-### Decision & Rationale
+Additionally, duplicate order ids were removed to avoid double-counting. Since an order could be updated at a later time, the most recent record for each order was considered during deduplication.
+
+### 🧑‍🦳 customers
+#### Decision & Rationale
 tbd
 
-### Decision & Rationale
+#### Decision & Rationale
+tbd
+
+### 🛍️ products
+#### Decision & Rationale
+tbd
+
+#### Decision & Rationale
 tbd
 
 ---

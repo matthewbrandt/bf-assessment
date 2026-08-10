@@ -1,0 +1,23 @@
+version: 2
+
+models:
+  - name: stg_orders
+    description: |
+      Staging model for orders that removes bad dates, filters orders outside the Jan-Mar 2024 reporting window,
+      deduplicates by id using the newest updated_at.
+    columns:
+      - name: id
+        description: Unique order identifier.
+      - name: customer_id
+        description: Customer identifier for relationship tests.
+      - name: created_at
+        description: Parsed order date within the valid reporting range.
+      - name: status
+        description: Order lifecycle state.
+      - name: amount
+        description: Cleaned numeric amount; null or invalid amounts are excluded.
+      - name: currency
+        description: Order currency.
+      - name: updated_at
+        description: Parsed updated timestamp used for incremental deduplication.
+
