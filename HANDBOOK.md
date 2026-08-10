@@ -1,6 +1,6 @@
 # Assessment Handbook
 
-This page describes the submitted work for the assessment. It is worded concisely and generated with the assistance of an LLM, while final review was done by the author.
+This page describes the submitted work for the assessment. It is worded concisely and partially LLM-generated - final review was done by the author. VS Code, with the assistance of CoPilot, was used in the development of this project, and the dbt CLI was used to run and test the models.
 
 ## Executive Summary
 
@@ -41,11 +41,8 @@ Orders with missing, zero or zero-like amounts are exempt from revenue aggregati
 Additionally, duplicate order ids were removed to avoid double-counting. Since an order could be updated at a later time, the most recent record for each order was considered during deduplication.
 
 ### 🧑‍🦳 customers
-#### Decision & Rationale
-tbd
-
-#### Decision & Rationale
-tbd
+#### Uniqueness & Validity
+Customer ID is unique and non-null, so no additional cleaning was required. However, email is not unique across customers so in order to avoid possible later-stage quality issues, records with duplicate emails were flagged in the table (on all affected rows) to allow for later usage.
 
 ### 🛍️ products
 #### Decision & Rationale

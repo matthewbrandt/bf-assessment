@@ -21,3 +21,18 @@ models:
       - name: updated_at
         description: Parsed updated timestamp used for incremental deduplication.
 
+
+  - name: stg_customers
+    description: |
+      Staging model for customers that normalises emails and flags duplicate email addresses. When an email appears more than once, all matching rows are retained but marked as duplicates.
+    columns:
+      - name: id
+        description: Unique customer identifier.
+      - name: email
+        description: Normalised lowercase email.
+      - name: country_code
+        description: Customer country used for revenue aggregation.
+      - name: created_at
+        description: Customer creation date.
+      - name: has_duplicate_email
+        description: True when the email appears in more than one customer row.
