@@ -8,7 +8,7 @@ orders AS (
         id,
         customer_id,
         created_at,
-        DATE_TRUNC('MONTH', created_at)::DATE AS created_year_month,
+        STRFTIME(created_at,'%Y-%m') AS created_year_month,
         CASE 
             WHEN updated_at != created_at 
                 AND updated_at > created_at
@@ -38,7 +38,7 @@ customers AS (
 SELECT
     od.*,
     ct.* EXCLUDE (id),
-    (od.status IN ('completed', 'shipped')) AS is_revenue_recognizable
+    (od.status IN ('completed', 'shipped')) AS is_revenue_recognisable
 FROM 
     orders AS od
 LEFT JOIN customers AS ct

@@ -22,14 +22,13 @@ raw AS (
             --future orders impermissible)
         )
         OR
-        --incorrect or invalid amounts
-        total_amount IS null
-        OR total_amount < 0
+        --incorrect/invalid amounts
+        total_amount IS NOT NULL
         OR
         --orders not (yet) executed (cancelled, pending, returned) with no value
         (
-            status IN ('cancelled', 'pending', 'returned')
-            AND total_amount < 1
+            status NOT IN ('cancelled', 'pending', 'returned')
+            AND total_amount > 0
         )
     ORDER BY order_id
 ),

@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: fct_monthly_revenue
+    description: |
+      Incremental mart at country × month grain. Aggregates valid order revenue, counts orders, computes average order value, and includes month-over-month revenue growth. Incremental logic appends updated country-month rows based on the latest updated_at value.
+    columns:
+      - name: country_code
+        description: Country code for revenue aggregation.
+      - name: created_year_month
+        description: Reporting period in YYYY-MM.
+      - name: total_revenue
+        description: Sum of valid order revenue in the period.
+      - name: order_count
+        description: Unique count of valid orders in the period.
+      - name: avg_order_value
+        description: Average revenue per valid order.
+      - name: revenue_mom_growth_cc_pct
+        description: Percent change versus the prior month for the same country.
+      - name: max_updated_at
+        description: Latest updated_at used for incremental refresh logic.

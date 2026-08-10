@@ -29,5 +29,5 @@ models:
         description: Customer email from the joined customer record.
       - name: has_duplicate_email
         description: Flag indicating whether the customer email is duplicated.
-      - name: is_revenue_recognizable
+      - name: is_revenue_recognisable
         description: Whether the order status qualifies for revenue recognition.
